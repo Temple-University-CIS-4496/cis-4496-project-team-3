@@ -7,8 +7,11 @@
 
 ## Scope
 * What data science solutions are we trying to build?
+	- Narrative Similarity Detection System
+    - Genre Convergence Analyzer
 * What will we do?
 * How is it going to be consumed by the customer?
+  - Using Interactive Notebooks, Technical Report, Dashboard and/or Presentation deck
 
 ## Personnel
 * Who are on this project:
@@ -23,11 +26,11 @@
 	
 ## Metrics
 * What are the qualitative objectives? (e.g. reduce user churn)
-- Reduce uncertainty about narrative trends
-- Quantify creative diversity
-- Benchmark genre distinctiveness
+	- Reduce uncertainty about narrative trends
+ 	- Quantify creative diversity
+ 	- Benchmark genre distinctiveness
 * What is a quantifiable metric  (e.g. reduce the fraction of users with 4-week inactivity)
-- Narrative Arc Similarity, Narrative Transition Entropy, Genre Conergence Ratio
+ - Narrative Arc Similarity, Narrative Transition Entropy, Genre Conergence Ratio
   
 * Quantify what improvement in the values of the metrics are useful for the customer scenario (e.g. reduce the  fraction of users with 4-week inactivity by 20%) 
 * What is the baseline (current) value of the metric? (e.g. current fraction of users with 4-week inactivity = 60%)
@@ -39,14 +42,14 @@
 ## Architecture
 * Data
   * What data do we expect? Raw data in the customer data sources (e.g. on-prem files, SQL, on-prem Hadoop etc.)
-  - IMSDb (web scraping HTML parsing)
-  - Cornell Movie Dialogs Corpus (academic dataset)
+    - IMSDb (web scraping HTML parsing)
+    - Cornell Movie Dialogs Corpus (academic dataset)
 * Data movement from on-prem to Azure using ADF or other data movement tools (Azcopy, EventHub etc.) to move either
   * all the data, 
   * after some pre-aggregation on-prem,
   * Sampled data enough for modeling
 
-  - [Web Sources] → [Python Scrapers] → [Local Storage]
+ 	 - [Web Sources] → [Python Scrapers] → [Local Storage]
          
 
 * What tools and data storage/analytics resources will be used in the solution e.g.,
@@ -54,7 +57,8 @@
   * HDI/Hive/R/Python for feature construction, aggregation and sampling
   * AzureML for modeling and web service operationalization
 
-  - Google Drive, Github
+ 	 - Google Drive, Github
+  
 * How will the score or operationalized web service(s) (RRS and/or BES) be consumed in the business workflow of the customer? If applicable, write down pseudo code for the APIs of the web service calls.
   * How will the customer use the model results to make decisions
   * Data movement pipeline in production
