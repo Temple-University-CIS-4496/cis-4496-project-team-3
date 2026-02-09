@@ -44,6 +44,7 @@
 * What is the baseline (current) value of the metric? (e.g. current fraction of users with 4-week inactivity = 60%)
 	- Baseline can be 1980-1995 subset of movies. Can be used a reference point
 * How will we measure the metric? (e.g. A/B test on a specified subset for a specified period; or comparison of performance after implementation to baseline)
+  	- Project success is defined as identifying statistically detectable trends in narrative similarity or genre convergence relative to the baseline period. Project failure is defined as metrics showing no distinguishable patterns beyond noise or results that are not interpretable.
 
 ## Plan
 * Phases (milestones), timeline, short description of what we'll do in each phase.
@@ -78,6 +79,7 @@
   
 * How will the score or operationalized web service(s) (RRS and/or BES) be consumed in the business workflow of the customer? If applicable, write down pseudo code for the APIs of the web service calls.
   * How will the customer use the model results to make decisions
+    * The customer will use similarity and convergence metrics to support or challenge claims of narrative homogenization in academic research. Visualizations will be used to compare genres and time periods in papers, presentations, and exploratory analyses.
   * Data movement pipeline in production
   * Make a 1 slide diagram showing the end to end data flow and decision architecture
     * If there is a substantial change in the customer's business workflow, make a before/after diagram showing the data flow.
@@ -114,6 +116,9 @@ graph LR
 7. **Analysis:** Similarity, entropy, convergence metrics
 8. **Visualization:** Plots, charts, heatmaps
 9. **Report:** Technical document + presentation
+
+## Data Limitations and Bias
+Script availability may bias the dataset toward popular or English-language films. OCR and formatting inconsistencies may introduce noise, particularly in older scripts.
 
 ## Communication
 * How will we keep in touch? Weekly meetings?
