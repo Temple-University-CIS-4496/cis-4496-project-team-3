@@ -13,7 +13,7 @@ SUPABASE_URL = "https://ceyhlqhetmcpzpzzrppv.supabase.co"
 API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNleWhscWhldG1jcHpwenpycHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjE5MzIsImV4cCI6MjA1ODQ5NzkzMn0.oMs4gqPFi2P70khV2TvsKo-9eRN4Lf_EopB_oABKY6E"
 
 # ⚠ Refresh this from DevTools > Network > any request > Authorization header (expires hourly)
-SESSION_TOKEN = "REMOVED_TOKEN"
+SESSION_TOKEN = "your-session-token" # Expires hourly
 CATEGORY_FILTER = "Film"   # Set to None to download all categories
 LIMIT = 100                # Set to None for full run
 
