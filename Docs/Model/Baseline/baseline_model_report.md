@@ -79,13 +79,6 @@ The research question is inherently unsupervised — we are not trying to predic
 | Silhouette Score | How tight and separated clusters are (-1 to 1) | Higher = more distinct clusters |
 | Adjusted Rand Index (ARI) | How well clusters align with true eras (0 to 1) | Higher = clusters match eras |
 
-*(Actual values will be populated after pipeline run)*
-
-### Cluster × Era Distribution
-See `baseline_cluster_crosstab.csv` in `pipeline_outputs/` for full breakdown of which films fall in which clusters by era.
-
-### UMAP Visualization
-See `02_baseline_kmeans.png` — side-by-side comparison of discovered clusters vs true era labels in 2D BERT embedding space. Visual overlap between eras in the right panel indicates semantic convergence.
 
 ---
 
@@ -115,13 +108,3 @@ KMeans does not overfit in the traditional sense — it is a distance-based algo
 ### Improved Model
 The improved model (Random Forest Era Classifier) adds supervised learning on top of the sentiment arc features. It measures how well a trained model can distinguish eras — complementing the unsupervised baseline by asking "even with labeled supervision, can we tell these eras apart?"
 
-### Additional Features for Next Iteration
-- Segment-level BERT embeddings (encode each narrative act separately)
-- LDA topic distributions per script
-- Structural features (scene count, dialogue ratio, vocabulary richness)
-- TF-IDF vectors for thematic vocabulary comparison
-
-### Other Relevant Data Sources
-- IMDb genre/budget metadata for genre-stratified analysis
-- Additional pre-1995 scripts to balance era representation
-- Screenwriting award data (WGA, Oscars) for quality-stratified analysis
