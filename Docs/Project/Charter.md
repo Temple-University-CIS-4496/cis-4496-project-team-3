@@ -1,10 +1,5 @@
 # Project Charter
 
-## Business background
-
-* Who is the client, what business domain the client is in.
-	- Client would be Academic Research Team
-	- Domain would be Cultural Analytics
 
 ## Problem Description
 
@@ -18,11 +13,11 @@ Semantic content (BERT embeddings) — the underlying meaning and themes present
 
 By combining these approaches, we aim to detect whether modern films show stronger patterns of similarity compared to earlier eras. If films are becoming more homogeneous, we expect to observe:
 
-Higher similarity in narrative arcs
+- Higher similarity in narrative arcs
 
-Lower variability in narrative transitions
+- Lower variability in narrative transitions
 
-Stronger clustering of scripts in feature space
+- Stronger clustering of scripts in feature space
 
 Ultimately, the goal is to provide quantitative evidence that either supports or challenges the idea of narrative homogenization in contemporary cinema.
 
@@ -32,87 +27,85 @@ This project develops a complete end-to-end narrative analysis pipeline that tra
 
 The system includes the following components:
 
-Data Ingestion
+1. Data Ingestion
 
-Collection of movie script PDFs from Script hive
+- Collection of movie script PDFs from Script hive
 
-Metadata integration (title, year, era classification)
+- Metadata integration (title, year, era classification)
 
-Validation of files and filtering for usability
+- Validation of files and filtering for usability
 
-Preprocessing Pipeline
+2. Preprocessing Pipeline
 
-Extraction of text from PDFs using PyMuPDF
+- Extraction of text from PDFs using PyMuPDF
 
-Removal of structural noise such as:
+- Removal of structural noise such as:
 
-Page numbers
+  * Page numbers
 
-Formatting artifacts
+  * Formatting artifacts
 
-Character name headers
+  * Character name headers
 
-Stage directions and boilerplate text
+- Normalization of text:
 
-Normalization of text:
+  * Lowercasing
 
-Lowercasing
+  * Standardized spacing
 
-Standardized spacing
-
-Clean formatting across all scripts
+  * Clean formatting across all scripts
 
 The preprocessing stage begins with a large collection of approximately 12,000 movie scripts, of which around 7,000 contain usable, selectable text. Because the raw data varies significantly in formatting and quality, additional filtering is applied to keep only scripts with sufficient length and valid metadata. The scripts span from the 1940s to the present, enabling analysis across multiple cinematic eras. During preprocessing, text is extracted from PDF files and cleaned by removing noise such as page numbers, formatting artifacts, and non-narrative elements. The text is then normalized through consistent lowercasing and spacing to ensure that all scripts follow a standardized structure, making them suitable for feature extraction and modeling.
 
-Feature Engineering
+3. Feature Engineering
 
 In this project the focus is two primary types of features:
 
 Sentiment Arcs
 
-Each script is divided into equal narrative segments
+- Each script is divided into equal narrative segments
 
-Sentiment scores are computed per segment
+- Sentiment scores are computed per segment
 
-Result: a vector representing emotional progression across the story
+- Result: a vector representing emotional progression across the story
 
 BERT Embeddings
 
-A pretrained transformer model converts text into dense numerical vectors
+- A pretrained transformer model converts text into dense numerical vectors
 
-Captures deeper semantic meaning beyond surface-level text
+- Captures deeper semantic meaning beyond surface-level text
 
-Modeling
+4. Modeling
 
 We apply both unsupervised and supervised approaches:
 
-Clustering (KMeans / Spectral)
+- Clustering (KMeans / Spectral)
 
-Groups scripts based on similarity
+		* Groups scripts based on similarity
 
-Tests whether natural clusters align with time periods
+		* Tests whether natural clusters align with time periods
 
-Classification (Random Forest, Logistic Regression)
+- Classification (Random Forest, Logistic Regression)
 
-Predicts era based on narrative features
+		*Predicts era based on narrative features
 
-Helps identify which features differentiate older vs modern films
+		*Helps identify which features differentiate older vs modern films
 
-Visualization
+5. Visualization
 
-PCA / UMAP for dimensionality reduction
+- PCA / UMAP for dimensionality reduction
 
-Cluster visualization and trend analysis
+- Cluster visualization and trend analysis
 
-Sentiment arc comparisons across eras
+- Sentiment arc comparisons across eras
 
-Evaluation & Statistical Testing
+6. Evaluation & Statistical Testing
 
-Model performance metrics
+- Model performance metrics
 
-Narrative similarity metrics
+- Narrative similarity metrics
 
-Statistical validation of results
+- Statistical validation of results
 
 ## Metrics
 
@@ -120,41 +113,41 @@ We evaluate the project using a combination of machine learning metrics and doma
 
 Model Performance Metrics
 
-Silhouette Score → cluster separation quality
+- Silhouette Score → cluster separation quality
 
-Adjusted Rand Index (ARI) → alignment with true labels
+- Adjusted Rand Index (ARI) → alignment with true labels
 
-F1 Score (Random Forest / Logistic Regression) → classification performance
+- F1 Score (Random Forest / Logistic Regression) → classification performance
 
 Narrative Metrics
 
-Narrative Arc Similarity
+- Narrative Arc Similarity
 Measures how similar emotional progressions are across films
 
-Transition Entropy
+- Transition Entropy
 Captures how predictable or varied narrative transitions are
 (lower entropy = more formulaic storytelling)
 
-Genre/Cluster Convergence Ratio (GCR)
+- Genre/Cluster Convergence Ratio (GCR)
 Compares similarity within groups vs across groups
 
 Statistical Validation
 
-Mann-Whitney U Test
+- Mann-Whitney U Test
 
-Tests whether modern films show significantly higher similarity than earlier films
+	* Tests whether modern films show significantly higher similarity than earlier films
 
-Provides statistical grounding for conclusions
+	* Provides statistical grounding for conclusions
 
 Success Criteria
 
 The project is successful if:
 
-We detect measurable and statistically significant differences in narrative similarity across eras
+- We detect measurable and statistically significant differences in narrative similarity across eras
 
-Patterns are interpretable and consistent across multiple results
+- Patterns are interpretable and consistent across multiple results
 
-Results provide meaningful insight into narrative trends
+- Results provide meaningful insight into narrative trends
 
 ## Architecture
 
@@ -162,45 +155,45 @@ The system is designed as a modular pipeline, allowing each stage to be develope
 
 Pipeline Flow
 
-Raw Data
+1. Raw Data
 
-PDF scripts + metadata
+- PDF scripts + metadata
 
-Preprocessing
+2. Preprocessing
 
-Text extraction
+- Text extraction
 
-Cleaning and normalization
+- Cleaning and normalization
 
-Processed Data
+3. Processed Data
 
-Structured and standardized scripts
+- Structured and standardized scripts
 
-Feature Extraction
+4. Feature Extraction
 
-Sentiment arc vectors
+- Sentiment arc vectors
 
-BERT embedding vectors
+- BERT embedding vectors
 
-Modeling
+5. Modeling
 
-Clustering and classification models
+- Clustering and classification models
 
-Evaluation
+6. Evaluation
 
-Metrics + statistical tests
+- Metrics + statistical tests
 
-Visualization & Outputs
+7. Visualization & Outputs
 
-Plots, embeddings, summaries
+- Plots, embeddings, summaries
 
 This modular design allows us to:
 
-Debug individual components
+	*Debug individual components
 
-Improve data quality without affecting models
+	*Improve data quality without affecting models
 
-Easily scale or expand the system
+	*Easily scale or expand the system
 
 ## Plan
 
@@ -208,35 +201,35 @@ The project has progressed significantly beyond the initial planning stage.
 
 Completed
 
-Data collection and validation
+- Data collection and validation
 
-Preprocessing pipeline implementation
+- Preprocessing pipeline implementation
 
-Script cleaning and normalization
+- Script cleaning and normalization
 
-Feature extraction (sentiment + embeddings)
+- Feature extraction (sentiment + embeddings)
 
-Initial clustering and PCA visualization
+- Initial clustering and PCA visualization
 
 Current Work
 
-Identifying and removing outliers affecting clustering
+- Identifying and removing outliers affecting clustering
 
-Investigating cluster quality and interpretability
+- Investigating cluster quality and interpretability
 
-Comparing scripts within clusters to understand differences
+- Comparing scripts within clusters to understand differences
 
 Next Steps
 
-Refine dataset by removing corrupted or low-quality scripts
+- Refine dataset by removing corrupted or low-quality scripts
 
-Re-run clustering and evaluate improvements
+- Re-run clustering and evaluate improvements
 
-Finalize models and evaluation metrics
+- Finalize models and evaluation metrics
 
-Complete statistical validation
+- Complete statistical validation
 
-Prepare reports and visualizations
+- Prepare reports and visualizations
 
 This reflects a transition from building the pipeline to refining results and improving insights.
 
@@ -244,31 +237,31 @@ This reflects a transition from building the pipeline to refining results and im
 
 Preliminary analysis has revealed several important insights:
 
-Clustering results show potential groupings, but outliers heavily impact visualization and model performance
+- Clustering results show potential groupings, but outliers heavily impact visualization and model performance
 
-Some clusters appear to represent corrupted or poorly processed scripts rather than meaningful narrative differences
+- Some clusters appear to represent corrupted or poorly processed scripts rather than meaningful narrative differences
 
-PCA plots indicate that most scripts are tightly grouped, suggesting possible similarity, but results are not yet reliable due to noise
+- PCA plots indicate that most scripts are tightly grouped, suggesting possible similarity, but results are not yet reliable due to noise
 
 This has led to a shift in focus toward:
 
-Improving data quality
+- Improving data quality
 
-Removing outliers
+- Removing outliers
 
-Re-evaluating clustering results
+- Re-evaluating clustering results
 
 ## Personnel
 
 The project is a collaborative effort with shared responsibilities across all stages of the pipeline:
 
-Data collection and preprocessing
+- Data collection and preprocessing
 
-Feature engineering and modeling
+- Feature engineering and modeling
 
-Evaluation and visualization
+- Evaluation and visualization
 
-Documentation and reporting
+- Documentation and reporting
 
 Team Members:
 
@@ -286,10 +279,10 @@ Vishrut
 
 To ensure efficient collaboration:
 
-GitHub → version control and pipeline tracking
+- GitHub → version control and pipeline tracking
 
-Discord → quick communication and updates
+- Discord → quick communication and updates
 
-Zoom/In-person meetings → discussions and presentations
+- Zoom/In-person meetings → discussions and presentations
 
 Regular communication ensures alignment across technical and analytical work.
