@@ -4,106 +4,119 @@ This document describes the datasets being used in our project on narrative simi
 
 # Overview
 
-Our project currently uses two main script datasets: 
-*Small working dataset
-*Large script collection
+Our project uses a large-scale movie script dataset collected from ScriptHive. The dataset originally contained over 10,000 scripts, but after preprocessing, filtering, and deduplication, it has been refined into a cleaner and more usable dataset.
 
-The small dataset is our main working dataset for early experimentation, testing, and pipeline validation. The large dataset is a broader collection intended for future use once cleaning, matching, and preprocessing issues are resolved.
+Through this process:
+- Approximately 7,000 scripts were identified as having usable, selectable text  
+- Duplicate and near-duplicate scripts were removed  
+- The dataset was reduced to approximately 4,226 cleaned and unique scripts
 
----
-
-# Dataset 1: Small Working Script Dataset
-
-# Description
-This dataset contains approximately 500 movie scripts  collected from scripthive. These scripts vary in quality and format. Some contain selectable text, while others require OCR or additional cleaning. Not all scripts are currently joinable to external metadata or popularity weights.
-
-# Purpose
-This is the primary dataset currently being used for:
-- testing preprocessing pipelines
-- generating embeddings
-- dimensionality reduction with UMAP
-- clustering with HDBSCAN or K-Means
-- validating whether our overall pipeline works on a manageable sample
-
-# Current Characteristics
-- Approximate size: 500 scripts
-- File types: primarily PDF scripts
-- Text quality: mixed
-- Joinability: partial
-- Source type: publicly collected scripts
-
-# Current Organization
-Scripts in this dataset may be grouped into categories such as:
-- selectable
-- OCR
-- joinable
-- non-joinable
-- clear OCR
-- obscured OCR
-
-These categories help us track script quality and determine which files are suitable for analysis.
-
-# Information Available
-Depending on the script, we may currently have:
-- script title
-- file name
-- extracted text
-- script quality category
-- joinability status
-- OCR quality label
-- year (for some scripts)
-- possible metadata match status
-
-# Limitations
-- Not all scripts have clean text
-- Not all scripts can be matched to metadata or weights
-- OCR-based scripts may contain extraction errors
-- File naming may be inconsistent across sources
-
-
-## Dataset 2: Large Script Collection
-
-# Description
-This dataset contains over 10,000 scripts collected from scripthive. This is our larger long-term dataset, but it is currently harder to use because of formatting inconsistencies and preprocessing complexity.
-
-# Purpose
-This dataset is intended for:
-- scaling our narrative similarity analysis
-- improving coverage across genres and time periods
-- supporting future large-scale clustering and trend analysis
-
-# Current Characteristics
-- Approximate size: 10,000+ scripts
-- Text quality: highly variable
-- Joinability: currently limited / incomplete
-  
-### Current Challenges
-- inconsistent formatting
-- possibly duplicate pr partial scripts
-- more cleaning and computing requirements
-- higher risk of OCR and text extraction noise
-
-### Planned Use
-We plan to use this dataset after:
-- improving script cleaning
-- improving title/year matching
-- standardizing file structure
-- confirming that our modeling pipeline performs well on the smaller dataset first
+This refined dataset is now the primary dataset used for all modeling and analysis.
 
 ---
 
-## Supporting Metadata / Weights
+# Dataset: Cleaned Script Collection
 
-Some scripts may later be linked to external metadata, variables such as:
-- release year
-- genre
-- ratings
-- box office or other popularity measures
+## Description
 
-At this stage, metadata linkage is still incomplete and is stronger for the smaller working dataset than for the large script collection.
+This dataset consists of movie scripts collected from ScriptHive and processed through a preprocessing pipeline. The scripts span multiple decades, enabling analysis of narrative trends over time.
 
----
+Each script has undergone:
+- text extraction from PDF files  
+- cleaning and normalization  
+- filtering based on quality and formatting  
+- deduplication to remove exact and near-duplicate files  
+
+## Purpose
+
+This dataset is used for:
+- generating sentiment-based narrative arcs  
+- creating BERT embeddings for semantic analysis  
+- performing dimensionality reduction (UMAP)  
+- clustering scripts based on narrative similarity  
+- analyzing trends in storytelling across time
+
+## Current Characteristics
+
+- Total scripts (after cleaning and deduplication): ~4,226  
+- Original dataset size: 10,000+ scripts  
+- Usable scripts before deduplication: ~7,000  
+- File type: PDF  
+- Text quality: mixed but filtered for usability  
+- Time range: approximately 1980–2024  
+- Metadata availability: partial  
+
+## Data Processing Pipeline
+
+The dataset was processed through several stages:
+
+### 1. Text Extraction
+- Scripts are read from PDF files using PyMuPDF  
+- Raw text is extracted page by page  
+
+### 2. Filtering
+Scripts are removed if they:
+- contain fewer than a minimum number of words  
+- do not include a valid year in the filename  
+- fall outside the target year range  
+- lack script formatting indicators (e.g., INT., EXT., CUT TO)  
+- have poor OCR quality (low alphabetic character ratio)  
+
+### 3. Cleaning and Normalization
+- removal of formatting artifacts (page numbers, spacing issues)  
+- lowercasing all text  
+- standardizing whitespace and structure  
+
+### 4. Deduplication (Key Update)
+
+A deduplication process was applied to improve dataset quality:
+
+- exact duplicates identified using hashing (SHA256)  
+- near duplicates identified using similarity measures (token overlap and simhash)  
+- scripts grouped into duplicate clusters  
+- one representative script retained per group  
+
+This step reduced redundancy and resulted in a final dataset of approximately **4,226 unique scripts**.
+
+## Benefits of Deduplication
+
+- prevents duplicate scripts from biasing results  
+- improves clustering accuracy  
+- reduces computational cost  
+- ensures more reliable statistical analysis
+
+
+## Information Available
+
+For each script, the dataset may include:
+- title (parsed from filename)  
+- writer (when available)  
+- year  
+- full extracted text  
+- word count  
+- era classification (Pre-1980, 1980–1995, etc.)  
+- source folder  
+
+
+## Limitations
+
+- metadata is incomplete (e.g., missing genres, ratings)  
+- some scripts still contain OCR noise  
+- file naming inconsistencies affect metadata extraction  
+- not all scripts are perfectly cleaned  
+- genre information is not yet fully integrated  
+
+
+## Supporting Metadata
+
+Future improvements include linking scripts to:
+- genre  
+- ratings  
+- box office performance  
+- additional external metadata sources  
+
+This will enable deeper analysis beyond structural similarity.
 
 ## Notes
 
-Because this project is still in active development, the data dictionary will continue to be updated as datasets are cleaned, standardized, and linked to additional metadata.
+The dataset is still evolving as preprocessing improves. Additional cleaning, metadata enrichment, and validation steps will continue to refine the dataset and improve the reliability of downstream modeling.
