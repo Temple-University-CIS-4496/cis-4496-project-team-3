@@ -69,7 +69,12 @@ The dataset has gone through the following pipeline:
    - exact duplicates removed using hashing  
    - near duplicates identified using similarity measures  
    - scripts grouped into clusters  
-   - one representative script retained per group  
+   - one representative script retained per group
+  
+## Data Organization Structure
+<img width="314" height="253" alt="Screenshot 2026-03-24 at 6 23 15 PM" src="https://github.com/user-attachments/assets/58d0e687-d8cc-4cdf-a859-4f498cd64943" /> 
+
+The dataset is organized into structured directories based on script type and quality. Scripts are separated into selectable and OCR-based categories, with further grouping based on joinability and text clarity. This organization supports efficient filtering, preprocessing, and selection of high-quality scripts for modeling.  
 
 ## Current Dataset Statistics
 
