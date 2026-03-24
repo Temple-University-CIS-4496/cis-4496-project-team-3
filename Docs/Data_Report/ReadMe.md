@@ -4,89 +4,98 @@ This document summarizes the current state of our data collection, preprocessing
 
 ## Project Data Status
 
-Our project is focused on analyzing movie scripts to study narrative similarity and variation across films. At this stage, our work is centered on building a usable script corpus and validating a modeling pipeline using text embeddings and clustering.
+Our project focuses on analyzing movie scripts to study narrative similarity and variation across films. At this stage, our work is centered on building a clean and scalable dataset and validating a modeling pipeline using text embeddings and clustering.
 
-We currently have two script collections:
+The dataset originally contained over 10,000 scripts collected from ScriptHive. After filtering for usability and removing low-quality files, approximately 7,000 scripts with selectable text remained. A deduplication process was then applied to remove exact and near-duplicate scripts, resulting in a final working dataset of approximately **4,226 unique scripts**.
 
-- a small working dataset of about 500 scripts
-- a large script collection of over 10,000 scripts
-
-The smaller dataset is currently more usable and is serving as our main experimental dataset. The larger dataset offers more scale, but it is more difficult to clean and organize and it is not ready for full modeling.
-
----
+This dataset is now the primary dataset used for all analysis and modeling.
 
 ## Current Data Quality Observations
 
-The script data varies significantly in quality. Some files contain selectable text and are somewhat clean, while others are image-based, require OCR, or contain formatting noise. In addition, not all scripts can currently be matched to metadata or popularity weights.
+The dataset has improved significantly after preprocessing and deduplication, but some challenges remain.
 
-Main issues observed so far include:
-- inconsistent PDF formatting
-- OCR-related text errors
-- incomplete or non-standard file naming
-- missing release year or metadata
-- scripts that cannot yet be joined to external weights
+Main observations:
 
-Based on this, the 500-script dataset is currently the best dataset for testing and validating our pipeline.
+- text quality still varies across scripts  
+- some scripts contain OCR noise or formatting inconsistencies  
+- metadata such as genre and ratings is incomplete  
+- file naming inconsistencies affect metadata extraction  
 
----
+Key improvement:
 
-# Current Modeling Pipeline
+- duplicate and near-duplicate scripts have been removed, reducing bias and improving overall dataset quality  
+
+## Current Modeling Pipeline
 
 Our team is currently building and testing a pipeline based on:
 
-**BERT embeddings → UMAP → HDBSCAN or K-Means clustering**
+**BERT embeddings → UMAP → HDBSCAN / K-Means clustering**
 
-# Purpose of the pipeline
-- convert script text into semantic embeddings
-- reduce dimensionality for visualization and clustering
-- group scripts into clusters based on narrative similarity
-- explore whether scripts form meaningful thematic or structural groupings
+### Purpose of the pipeline
 
-# Why this approach
-This pipeline gives us a more flexible and semantically useful approach than simpler word-count methods. BERT embeddings capture richer contextual information, while UMAP helps reduce the embedding space into a lower-dimensional structure that can be clustered more effectively.
+- convert script text into semantic embeddings  
+- reduce dimensionality for visualization and clustering  
+- group scripts based on narrative similarity  
+- analyze trends across time  
 
----
+## Why this approach
 
-# Current Use of the Two Datasets
+This approach allows us to move beyond simple text features and capture deeper narrative meaning.
 
-# Small dataset (~500 scripts)
-This dataset is currently being used for:
-- testing text extraction and cleaning
-- validating the embedding pipeline
-- running early clustering experiments
-- checking whether cluster outputs appear interpretable
+- BERT embeddings capture semantic content of scripts  
+- UMAP reduces high-dimensional data into a structure that can be visualized  
+- clustering identifies natural groupings of similar narratives  
 
-### Large dataset (10,000+ scripts)
-This dataset has strong long-term value but is currently more difficult to use because:
-- cleaning requirements are much larger
-- file quality is less consistent
-- compute and storage demands are higher
+## Data Processing Summary
 
-For now, this larger set is better viewed as a scaling target rather than the main experimental dataset.
+The dataset has gone through the following pipeline:
 
----
+1. **Text Extraction**
+   - scripts extracted from PDFs using PyMuPDF  
+
+2. **Filtering**
+   - removed scripts with low word count  
+   - removed scripts without valid year  
+   - removed scripts outside target range  
+   - removed scripts without screenplay formatting indicators  
+   - filtered out poor OCR text  
+
+3. **Cleaning and Normalization**
+   - removed formatting artifacts  
+   - standardized spacing  
+   - converted all text to lowercase  
+
+4. **Deduplication (Major Update)**
+   - exact duplicates removed using hashing  
+   - near duplicates identified using similarity measures  
+   - scripts grouped into clusters  
+   - one representative script retained per group  
+
+## Current Dataset Statistics
+
+- original dataset: 10,000+ scripts  
+- usable scripts: ~7,000  
+- final dataset after deduplication: ~4,226 scripts  
+
+This reflects a major improvement in dataset quality and usability.
 
 ## Preliminary Conclusions
 
-At this stage, the main conclusion is that data readiness is one of the biggest challenges in the project. The modeling pipeline is promising, but meaningful results depend heavily on script quality, text extraction consistency, and metadata linkage.
+At this stage, the dataset is significantly more reliable after cleaning and deduplication. The pipeline is functioning end-to-end, allowing us to extract features, generate embeddings, and begin clustering analysis.
 
-The smaller dataset gives us a realistic path for early testing and proof of concept. Once the pipeline is validated, we can work towards expanding to the larger dataset.
-
----
+However, results are still sensitive to:
+- remaining noise in the data  
+- outliers affecting clustering  
+- incomplete metadata  
 
 ## Next Steps
 
-Our next steps are to:
-
-1. improve cleaning and standardization of the 500-script dataset  
-2. finalize embedding and clustering experiments on the smaller set  
-3. evaluate cluster quality and interpretability  
-4. improve metadata matching and joinability
-5. work on the baseline model
-6. gradually scale the pipeline to the larger 10,000+ script collection
-
----
+- further refine dataset by removing outliers  
+- improve metadata (especially genre and year consistency)  
+- evaluate clustering quality and interpretability  
+- generate additional visualizations  
+- finalize modeling and statistical analysis  
 
 ## Summary
 
-The project has made strong progress in data collection, but the data is still in progress in terms of quality and completeness. The 500-script dataset is currently the most practical dataset for modeling, while the 10,000+ script dataset represents a future expansion opportunity once preprocessing and linkage issues are better resolved.
+The project has made strong progress in transforming a large, unstructured dataset into a cleaned and usable collection of scripts. Deduplication was a key milestone, reducing redundancy and improving the reliability of analysis. The current dataset provides a solid foundation for narrative similarity modeling and further exploration.
