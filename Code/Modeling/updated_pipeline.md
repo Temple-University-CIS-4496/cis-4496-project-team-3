@@ -1,5 +1,12 @@
-### Install & Import
+# Narrative Homogenization Pipeline
+This notebook sets out to implement the full analytical pipeline for our capstone project on narrative homogenization in Hollywood films. The aim is to test whether modern films are becoming more narratively similar to one another than their older counterparts in a specified baseline era. To achieve this, we combined a rule-based feature engineering stage with both unsupervised and supervised machine learning. Scripts are cleaned and converted into structured narrative features such as sentiment arcs, rare-word sentiment shifts, transition entropy, and Jensen-Shannon divergence. Then, we use semantic embeddings and downstream models to look at convergence from multiple different angles.
 
+### The roadmap: 
+1. Load and filter scripts by year and length 
+2. Clean and preprocess screenplay text 
+3. Generate heuristic narrative features 
+4. Run baseline and improved models 
+5. Evaluate convergence statistically and visually 
 
 ```python
 from google.colab import drive
@@ -202,6 +209,28 @@ print("✓ Saved scripts_clean_text.csv")
     ✓ Noise removed: 4.7% | Avg words: 23403 → 22306
     ✓ Saved scripts_clean_text.csv
 
+## Heuristic Feature Engineering Stage
+
+This stage is the rule-based backbone of the project. It is not a trained model. Instead, it converts raw script text into structured numerical representations of narrative behavior.
+
+The features include:
+- Sentiment arcs (emotional trajectory)
+- Rare-word sentiment arcs (distinctive language patterns)
+- Transition entropy (predictability of narrative shifts)
+- Jensen-Shannon divergence (vocabulary similarity)
+
+These features enable the downstream models to analyze narrative structure quantitatively.
+
+## Feature Interpretation
+
+| Feature                      | What it captures                        | Why it matters                                      |
+|----------------------------|----------------------------------------|---------------------------------------------------|
+| arc_0 to arc_9             | Emotional movement across script       | Measures overall narrative shape                  |
+| rare_arc_0 to rare_arc_9   | Emotion in rare vocabulary             | Tests uniqueness vs convergence                   |
+| transition_entropy         | Predictability of changes              | Lower = more formulaic storytelling               |
+| transition_entropy_rare    | Rare-word predictability               | Secondary structure signal                        |
+| jsd_from_baseline          | Distance from baseline vocabulary      | Measures convergence over time                    |
+| jsd_from_era_mean          | Typicality within era                  | Measures homogenization inside era                |
 
 ### Feature Engineering
 
@@ -301,7 +330,6 @@ print("✓ Saved sentiment_arcs.npy, rare_arc_matrix.npy, film_features.csv")
       rare_matrix : (2017, 10)
       df columns  : ['title', 'year', 'filename', 'word_count', 'text', 'era', 'decade', 'text_clean', 'arc_0', 'rare_arc_0', 'arc_1', 'rare_arc_1', 'arc_2', 'rare_arc_2', 'arc_3', 'rare_arc_3', 'arc_4', 'rare_arc_4', 'arc_5', 'rare_arc_5', 'arc_6', 'rare_arc_6', 'arc_7', 'rare_arc_7', 'arc_8', 'rare_arc_8', 'arc_9', 'rare_arc_9', 'transition_entropy', 'transition_entropy_rare']
     ✓ Saved sentiment_arcs.npy, rare_arc_matrix.npy, film_features.csv
-
 
 ### JSD Features
 
@@ -617,6 +645,16 @@ print("✓ Saved eda_dashboard.png")
 
     ✓ Saved eda_dashboard.png
 
+## Baseline Model (Unsupervised)
+
+This model uses BERT embeddings and KMeans clustering.
+
+It does NOT use era labels.
+
+Goal:
+- Check if scripts naturally cluster by era
+
+If clustering is weak → suggests convergence
 
 ### Baseline Model — BERT + KMeans
 
@@ -704,6 +742,14 @@ with open(os.path.join(OUTPUT_DIR, "baseline_results.json"), "w") as f:
 
     ✓ Saved baseline_kmeans.png
 
+## Improved Model (Random Forest)
+
+This model uses engineered narrative features rather than raw text or embeddings.
+
+It answers a different question than the baseline model:
+- Can we still distinguish eras using structured storytelling features?
+
+This helps determine whether convergence is complete or only partial.
 
 ### Improved Model - Random Forest
 
@@ -738,6 +784,7 @@ sm = SMOTE(random_state=42)
 X_train_bal, y_train_bal = sm.fit_resample(X_train, y_train)
 print(f"\n  After SMOTE: {Counter(y_train_bal)}")
 
+# Uses engineered narrative features for interpretability
 rf = RandomForestClassifier(n_estimators=200, random_state=42, class_weight="balanced")
 rf.fit(X_train_bal, y_train_bal)
 y_pred = rf.predict(X_test)
@@ -795,7 +842,6 @@ with open(os.path.join(OUTPUT_DIR, "improved_results.json"), "w") as f:
 
 
 ```
-
     
     ============================================================
     IMPROVED MODEL: Random Forest Era Classifier
@@ -852,6 +898,16 @@ with open(os.path.join(OUTPUT_DIR, "improved_results.json"), "w") as f:
 
     ✓ Saved feature_importance.png
 
+## Final Configuration Used in Report
+
+The final reported results use the full 24-feature configuration, which produced the most stable cross-validated performance.
+
+| Run              | Features | Notes                        | RF CV F1      | Used? |
+|------------------|---------|-----------------------------|--------------|------|
+| Run A            | 24      | Full feature set            | 0.761 ± 0.011 | No   |
+| Run B            | 24      | Less stable                 | 0.623 ± 0.055 | No   |
+| Run C            | 23      | Removed JSD era mean        | 0.746 ± 0.022 | No   |
+| Final            | 24      | Full upgraded pipeline      | 0.757 ± 0.007 | Yes  |
 
 ### Rolling Window Clustering
 
@@ -985,6 +1041,11 @@ print("✓ Saved rolling_window_trends.png")
 
     ✓ Saved rolling_window_trends.png
 
+## Pairwise Distance Analysis (Interpretation Note)
+
+The baseline-era arc distance output currently contains NaN values, so this section should be treated as exploratory rather than as a final reported result.
+
+Because of that, the main statistical conclusion of the project should come from the arc similarity test in the Statistical Evaluation section below, which shows a +43.7% increase in modern-era similarity with p = 0.0000.
 
 ### Pairwise Distance Analysis
 
@@ -1310,6 +1371,17 @@ print(f"\n  Output files:")
 for f in sorted(os.listdir(OUTPUT_DIR)):
     print(f"    {f}")
 print("="*60)
+
+## Final Interpretation
+
+The results support the narrative homogenization hypothesis.
+
+Modern films show significantly higher similarity than baseline films (+43.7%).
+
+However, the Random Forest model still distinguishes eras (F1 ≈ 0.757), meaning convergence is not complete.
+
+Conclusion:
+Storytelling has become more standardized, but not identical.
 
 ```
 
