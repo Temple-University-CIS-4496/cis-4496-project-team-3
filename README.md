@@ -304,7 +304,7 @@ nltk.download('stopwords')
 **Course:** CIS-4496 Data Science Capstone  
 **Institution:** Temple University  
 **Year:** 2026  
-**Instructor:** [Instructor name]
+**Instructor:**  Dr. Nancy Polychronopoulou
 
 ---
 
